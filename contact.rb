@@ -44,17 +44,31 @@ class Contact
   # 1. which of the contact's attributes you want to update
   # 2. the new value for that attribute
   # and then make the appropriate change to the contact
-  def update(edit_attribute, new_value)
-    case
-    when edit_attribute = "first_name"
-      @first_name = new_value
-    when edit_attribute = "last_name"
-      @last_name = new_value
-    when edit_attribute = "email"
-      @email = new_value
-    when edit_attribute = "note"
-      @note = new_value
-    end
+  def update(attribute, new_value)
+
+    @@contacts.find { |contact| contact if contact.send("#{attribute}=", new_value) }
+
+    # ATTEMPT #2 - Each, Send Method
+
+    # @@contacts.each do |contact|
+    #   if contact.send("#{attribute}=", new_value)
+    #     return contact
+    #   end
+    # end
+
+    # ATTEMPT #1 - Case Method
+
+    # case
+    # when edit_attribute = "first_name"
+    #   @first_name = new_value
+    # when edit_attribute = "last_name"
+    #   @last_name = new_value
+    # when edit_attribute = "email"
+    #   @email = new_value
+    # when edit_attribute = "note"
+    # @note = new_value
+    # end
+
   end
 
   # This method should work similarly to the find method above
@@ -129,6 +143,10 @@ steph = Contact.create("Stephanie", "Wu", "wu.stephanie@live.com", "n/a")
 lynna = Contact.create("Lynna", "Nguyen", "baekbitch@live.com", "n/a")
 julie = Contact.create("Julie", "Duong", "mmgoldfish@live.com", "n/a")
 
-puts "About to start find"
+p steph.first_name
 
-p Contact.find_by("first_name", "Stephanie")
+puts "Editing \n"
+
+steph.update("first_name", "Snee")
+
+p steph.first_name
