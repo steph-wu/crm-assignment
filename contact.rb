@@ -28,7 +28,7 @@ class Contact
 
   # This method should return all of the existing contacts
   def self.all
-    print @@contacts
+    @@contacts
   end
 
   # This method should accept an id as an argument
@@ -62,18 +62,46 @@ class Contact
   # by specifying both the name of the attribute and the value
   # eg. searching for 'first_name', 'Betty' should return the first contact named Betty
   def self.find_by(attribute, value)
-    @@contacts.each do |contact|
-      case
-      when attribute = "first_name" && value == contact.first_name
-        p contact
-      when attribute = "last_name" && value == contact.last_name
-        p contact
-      when attribute = "email" && value == contact.email
-        p contact
-      when attribute = "note" && value == contact.note
-        p contact
-      end
-    end
+
+    # ATTEMPT #5 - Find, Send Method, Single Line
+
+    @@contacts.find { |contact| contact if contact.send(attribute) == value }
+
+    # ATTEMPT #4 -  Find, Send Method
+
+    # @@contacts.find do |contact|
+    #   contact if contact.send(attribute) == value
+    # end
+
+    # ATTEMPT #3 - Send Method, Single Line
+
+    # @@contacts.each do |contact|
+    #   return contact if contact.send(attribute) == value
+    # end
+
+    # ATTEMPT #2 - Send Method
+
+      # @@contacts.each do |contact|
+      #   if contact.send("#{attribute}=", value)
+      #    return contact
+      #   end
+      # end
+
+    # ATTEMPT #1 - Case Method
+
+      # @@contacts.each do |contact|
+      #   case
+      #   when attribute = "first_name" && value == contact.first_name
+      #     p contact
+      #   when attribute = "last_name" && value == contact.last_name
+      #    p contact
+      #   when attribute = "email" && value == contact.email
+      #     p contact
+      #   when attribute = "note" && value == contact.note
+      #     p contact
+      #   end
+      # end
+
   end
 
   # This method should delete all of the contacts
@@ -101,15 +129,6 @@ steph = Contact.create("Stephanie", "Wu", "wu.stephanie@live.com", "n/a")
 lynna = Contact.create("Lynna", "Nguyen", "baekbitch@live.com", "n/a")
 julie = Contact.create("Julie", "Duong", "mmgoldfish@live.com", "n/a")
 
-Contact.all
+puts "About to start find"
 
-steph.delete
-lynna.delete
-
-p "\n \n"
-
-p "Deleting"
-
-p "\n \n"
-
-Contact.all
+p Contact.find_by("first_name", "Stephanie")
