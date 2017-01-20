@@ -6,12 +6,13 @@ class Contact
   @@next_id = 1000
 
   # This method should initialize the contact's attributes
-  def initialize(first_name, last_name, email, note = "n/a")
-    @id = @@next_id
+  def initialize(first_name, last_name, email, note)
     @first_name = first_name
     @last_name = last_name
     @email = email
     @note = note
+    @id = @@next_id
+    @@next_id += 1
   end
 
   # This method should call the initializer,
@@ -21,22 +22,20 @@ class Contact
     new_contact = self.new(first_name, last_name, email, note)
     # 2. Add the new Contact to the list of all contacts
     @@contacts << new_contact
-    # 3. Increment the next unique ID
-    @@next_id += 1
-    # 4. Return new object
-    new_contact
+    # 3. Return new object
+    return new_contact
   end
 
   # This method should return all of the existing contacts
   def self.all
-    @@contacts
+    print @@contacts
   end
 
   # This method should accept an id as an argument
   # and return the contact who has that id
   def self.find(id)
     @@contacts.each do |contact|
-      return contact if contact.next_id == id
+      return contact if contact.id == id
     end
 
   end
@@ -45,8 +44,17 @@ class Contact
   # 1. which of the contact's attributes you want to update
   # 2. the new value for that attribute
   # and then make the appropriate change to the contact
-  def update
-
+  def update(edit_attribute, new_value)
+    case
+    when edit_attribute = "first_name"
+      @first_name = new_value
+    when edit_attribute = "last_name"
+      @last_name = new_value
+    when edit_attribute = "email"
+      @email = new_value
+    when edit_attribute = "note"
+      @note = new_value
+    end
   end
 
   # This method should work similarly to the find method above
@@ -78,9 +86,9 @@ end
 
 ##########################
 
-steph = Contact.new("Stephanie", "Wu", "wu.stephanie@live.com")
-lynna = Contact.new("Lynna", "Nguyen", "baekbitch@live.com")
-julie = Contact.new("Julie", "Duong", "mmgoldfish@live.com")
+steph = Contact.create("Stephanie", "Wu", "wu.stephanie@live.com", "n/a")
+lynna = Contact.create("Lynna", "Nguyen", "baekbitch@live.com", "n/a")
+julie = Contact.create("Julie", "Duong", "mmgoldfish@live.com", "n/a")
 
+steph.update("first_name", "Snee")
 puts steph.first_name
-puts Contact.find(1)
