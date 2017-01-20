@@ -88,7 +88,7 @@ class Contact
   # This method should delete the contact
   # HINT: Check the Array class docs for built-in methods that might be useful here
   def delete
-
+    @@contacts.delete(self)
   end
 
   # Feel free to add other methods here, if you need them.
@@ -100,3 +100,16 @@ end
 steph = Contact.create("Stephanie", "Wu", "wu.stephanie@live.com", "n/a")
 lynna = Contact.create("Lynna", "Nguyen", "baekbitch@live.com", "n/a")
 julie = Contact.create("Julie", "Duong", "mmgoldfish@live.com", "n/a")
+
+Contact.all
+
+steph.delete
+lynna.delete
+
+p "\n \n"
+
+p "Deleting"
+
+p "\n \n"
+
+Contact.all
