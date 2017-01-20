@@ -78,7 +78,7 @@ class Contact
 
   # This method should delete all of the contacts
   def self.delete_all
-
+    @@contacts = []
   end
 
   def full_name
@@ -100,5 +100,3 @@ end
 steph = Contact.create("Stephanie", "Wu", "wu.stephanie@live.com", "n/a")
 lynna = Contact.create("Lynna", "Nguyen", "baekbitch@live.com", "n/a")
 julie = Contact.create("Julie", "Duong", "mmgoldfish@live.com", "n/a")
-
-Contact.find_by("first_name", "Stephanie")
