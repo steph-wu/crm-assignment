@@ -28,7 +28,7 @@ class CRM
     case user_selected
     when 1 then add_new_contact
     when 2 then modify_menu
-    when 3 then delete_content
+    when 3 then delete_contact
     when 4 then display_all_contacts
     when 5 then search_by_attribute
     when 6 then exit
@@ -62,6 +62,7 @@ class CRM
     puts '[3] Modify email'
     puts '[4] Modify note'
     puts '[5] Exit to main menu'
+    puts
 
     modify_existing_contact
 
@@ -90,46 +91,25 @@ end
 
   def delete_contact
 
+    puts "[1] Search for contact"
+    puts "[2] Enter contact ID"
+    find_by_id = gets.chomp.to_i
+
+    if find_by_id == 1
+      search_by_attribute
+      puts "Enter ID number: "
+      find_by_id = gets.chomp.to_i
+    end
+
+    Contact.all.each { |contact| contact.delete if contact.id == find_by_id }
+
   end
 
   def display_all_contacts
 
-  end
+    puts "\nCONTACT LIST\n\n"
 
-  def search_by_attribute
-
-    search_results = []
-
-    puts "\nSearch for field: "
-    puts "[1] First Name"
-    puts "[2] Last Name"
-    puts "[3] Email"
-    puts "[4] ID"
-    puts "[5] Main Menu"
-    puts "\nEnter a number: "
-    attribute = gets.chomp.to_i
-
-    case attribute
-    when 1
-      attribute = "first_name"
-    when 2
-      attribute = "last_name"
-    when 3
-      attribute = "email"
-    when 4
-      attribute = "id"
-    when 5
-      print_main_menu
-    end
-
-    puts "\nEnter value: "
-    value = gets.chomp
-
-    Contact.all.each { |contact| search_results << contact if contact.send("#{attribute}") == value }
-
-    puts "\nSEARCH RESULTS"
-
-    search_results.each do |contact|
+    Contact.all.each do |contact|
       puts "ID: #{contact.id}"
       puts "First Name: #{contact.first_name}"
       puts "Last Name: #{contact.last_name}"
@@ -138,6 +118,52 @@ end
       puts "\n"
     end
 
+  end
+
+  def search_by_attribute
+
+    puts "\nSearch: "
+    puts "[1] First Name"
+    puts "[2] Last Name"
+    puts "[3] Email"
+    puts "[4] ID"
+    puts "[5] Main Menu"
+    puts "\nEnter a number: "
+    @search_attr = gets.chomp.to_i
+
+    case @search_attr
+    when 1
+      @search_attr = "first_name"
+    when 2
+      @search_attr = "last_name"
+    when 3
+      @search_attr = "email"
+    when 4
+      @search_attr = "id"
+    when 5
+      print_main_menu
+    end
+
+    @search_results = []
+    puts "\nEnter value: "
+    value = gets.chomp
+
+    Contact.all.each { |contact| @search_results << contact if contact.send("#{@search_attr}") == value }
+
+    search_display
+
+  end
+
+  def search_display
+    puts "\nSEARCH RESULTS\n\n"
+    @search_results.each do |contact|
+      puts "ID: #{contact.id}"
+      puts "First Name: #{contact.first_name}"
+      puts "Last Name: #{contact.last_name}"
+      puts "Email: #{contact.email}"
+      puts "Note: #{contact.note}"
+      puts "\n"
+    end
   end
 
 
