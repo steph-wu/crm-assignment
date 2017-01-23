@@ -66,20 +66,20 @@ class CRM
 
 # Selects targeted attribute
 
-def target_attr
-  case @search_attr
-  when 1
-    @search_attr = "first_name"
-  when 2
-    @search_attr = "last_name"
-  when 3
-    @search_attr = "email"
-  when 4
-    @search_attr = "note"
-  when 5
-    print_main_menu
+  def target_attr
+    case @search_attr
+    when 1
+      @search_attr = "first_name"
+    when 2
+      @search_attr = "last_name"
+    when 3
+      @search_attr = "email"
+    when 4
+      @search_attr = "note"
+    when 5
+      print_main_menu
+    end
   end
-end
 
   def modify_existing_contact
 
@@ -142,9 +142,7 @@ end
   end
 
   def display_all_contacts
-
     puts "\nCONTACT LIST\n\n"
-
     Contact.all.each do |contact|
       puts "ID: #{contact.id}"
       puts "First Name: #{contact.first_name}"
@@ -153,7 +151,6 @@ end
       puts "Note: #{contact.note}"
       puts "\n"
     end
-
   end
 
   def search_by_attribute
@@ -190,7 +187,6 @@ end
       puts "\n"
     end
   end
-
 
 end
 
