@@ -27,7 +27,7 @@ class CRM
   def call_option(user_selected)
     case user_selected
     when 1 then add_new_contact
-    when 2 then modify_menu
+    when 2 then modify_existing_contact
     when 3 then delete_contact
     when 4 then display_all_contacts
     when 5 then search_by_attribute
@@ -51,41 +51,64 @@ class CRM
     Contact.create(first_name, last_name, email, note)
   end
 
-  def update(attribute, new_value)
-    @@contacts.find { |contact| contact if contact.send("#{attribute}=", new_value) }
-  end
+  def modify_existing_contact
 
-  def modify_menu
+    puts "\nEnter contact ID or type search: "
+    find_by_id = gets.chomp
 
+    if find_by_id.upcase == "SEARCH"
+      search_by_attribute
+      puts "Enter ID number: "
+      find_by_id = gets.chomp
+    end
+
+    Contact.all.each do |contact|
+      if contact.id == find_by_id.to_i
+        puts "\nID: #{contact.id}"
+        puts "First Name: #{contact.first_name}"
+        puts "Last Name: #{contact.last_name}"
+        puts "Email: #{contact.email}"
+        puts "Note: #{contact.note}"
+      end
+    end
+
+    puts "\n"
     puts '[1] Modify first name'
     puts '[2] Modify last name'
     puts '[3] Modify email'
     puts '[4] Modify note'
-    puts '[5] Exit to main menu'
-    puts
+    puts "[5] Exit to main menu\n"
+    puts "\nEnter a number: "
+    @search_attr = gets.chomp.to_i
+    puts "\nEnter new value: "
+    new_value = gets.chomp
 
-    modify_existing_contact
+    case @search_attr
+    when 1
+      @search_attr = "first_name"
+    when 2
+      @search_attr = "last_name"
+    when 3
+      @search_attr = "email"
+    when 4
+      @search_attr = "note"
+    when 5
+      print_main_menu
+    end
 
-end
-
-  def modify_existing_contact
-
-    # modify_selection = gets.chomp
-    #
-    # case modify_selection
-    # when "1"
-    #   puts "Enter new value: "
-    #   contact.first_name = gets.chomp
-    # when "2"
-    #   puts "Enter new value: "
-    #   contact.last_name = gets.chomp
-    # when "3"
-    #   puts "Enter new value: "
-    #   contact.email = gets.chomp
-    # when "4"
-    #   puts "Enter new value: "
-    #   contact.note = gets.chomp
-    # end
+    Contact.all.each do |contact|
+      if contact.id == find_by_id.to_i
+        contact.send("#{@search_attr}=", new_value)
+        puts "\n"
+        puts "CONTACT UPDATED\n"
+        puts "ID: #{contact.id}"
+        puts "First Name: #{contact.first_name}"
+        puts "Last Name: #{contact.last_name}"
+        puts "Email: #{contact.email}"
+        puts "Note: #{contact.note}"
+        puts "\n"
+      end
+    end
 
   end
 
