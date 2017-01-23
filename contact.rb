@@ -3,7 +3,7 @@ class Contact
   attr_reader :id
 
   @@contacts = []
-  @@next_id = 1000
+  @@next_id = 0
 
   # This method should initialize the contact's attributes
   def initialize(first_name, last_name, email, note)
@@ -142,11 +142,4 @@ end
 steph = Contact.create("Stephanie", "Wu", "wu.stephanie@live.com", "n/a")
 lynna = Contact.create("Lynna", "Nguyen", "baekbitch@live.com", "n/a")
 julie = Contact.create("Julie", "Duong", "mmgoldfish@live.com", "n/a")
-
-p steph.first_name
-
-puts "Editing \n"
-
-steph.update("first_name", "Snee")
-
-p steph.first_name
+steph_gan = Contact.create("Stephanie", "Gan", "steph.gan@live.com", "n/a")
