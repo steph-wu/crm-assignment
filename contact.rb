@@ -1,3 +1,5 @@
+require "minitest/autorun"
+
 class Contact
   attr_accessor :first_name, :last_name, :email, :note
   attr_reader :id
@@ -77,9 +79,11 @@ class Contact
   # eg. searching for 'first_name', 'Betty' should return the first contact named Betty
   def self.find_by(attribute, value)
 
-    # ATTEMPT #5 - Find, Send Method, Single Line
+    # ATTEMPT #5 - Each, Send Method, Single Line
 
-    @@contacts.find { |contact| contact if contact.send(attribute) == value }
+    @search_results = []
+    @@contacts.each { |contact| @search_results << contact if contact.send(attribute) == value }
+    return @search_results
 
     # ATTEMPT #4 -  Find, Send Method
 
@@ -124,7 +128,7 @@ class Contact
   end
 
   def full_name
-    "#{firstname} #{last_name}"
+    "#{first_name} #{last_name}"
   end
 
   # This method should delete the contact

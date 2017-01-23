@@ -67,15 +67,15 @@ class CRM
 # Selects targeted attribute
 
   def target_attr
-    case @search_attr
+    case @attribute
     when 1
-      @search_attr = "first_name"
+      @attribute = "first_name"
     when 2
-      @search_attr = "last_name"
+      @attribute = "last_name"
     when 3
-      @search_attr = "email"
+      @attribute = "email"
     when 4
-      @search_attr = "note"
+      @attribute = "note"
     when 5
       print_main_menu
     end
@@ -101,7 +101,7 @@ class CRM
     puts '[4] Modify note'
     puts "[5] Exit to main menu\n"
     puts "\nEnter a number: "
-    @search_attr = gets.chomp.to_i
+    @attribute = gets.chomp.to_i
     puts "\nEnter new value: "
     new_value = gets.chomp
 
@@ -109,7 +109,7 @@ class CRM
 
     Contact.all.each do |contact|
       if contact.id == @find_by_id.to_i
-        contact.send("#{@search_attr}=", new_value)
+        contact.update(@attribute, new_value)
         puts "\n"
         puts "CONTACT UPDATED\n"
         puts "ID: #{contact.id}"
@@ -162,15 +162,14 @@ class CRM
     puts "[4] ID"
     puts "[5] Main Menu"
     puts "\nEnter a number: "
-    @search_attr = gets.chomp.to_i
+    @attribute = gets.chomp.to_i
 
     target_attr
 
-    @search_results = []
     puts "\nEnter value: "
     value = gets.chomp
 
-    Contact.all.each { |contact| @search_results << contact if contact.send("#{@search_attr}") == value }
+    @search_results = Contact.find_by(@attribute, value)
 
     search_display
 
