@@ -3,7 +3,6 @@ require_relative 'contact'
 class CRM
 
   def initialize
-
   end
 
   def main_menu
@@ -51,19 +50,11 @@ class CRM
     Contact.create(first_name, last_name, email, note)
   end
 
-  def modify_existing_contact
+# Displays results of contact found by ID
 
-    puts "\nEnter contact ID or type search: "
-    find_by_id = gets.chomp
-
-    if find_by_id.upcase == "SEARCH"
-      search_by_attribute
-      puts "Enter ID number: "
-      find_by_id = gets.chomp
-    end
-
+  def contact_found
     Contact.all.each do |contact|
-      if contact.id == find_by_id.to_i
+      if contact.id == @find_by_id.to_i
         puts "\nID: #{contact.id}"
         puts "First Name: #{contact.first_name}"
         puts "Last Name: #{contact.last_name}"
@@ -71,6 +62,37 @@ class CRM
         puts "Note: #{contact.note}"
       end
     end
+  end
+
+# Selects targeted attribute
+
+def target_attr
+  case @search_attr
+  when 1
+    @search_attr = "first_name"
+  when 2
+    @search_attr = "last_name"
+  when 3
+    @search_attr = "email"
+  when 4
+    @search_attr = "note"
+  when 5
+    print_main_menu
+  end
+end
+
+  def modify_existing_contact
+
+    puts "\nEnter contact ID or type search: "
+    @find_by_id = gets.chomp
+
+    if @find_by_id.upcase == "SEARCH"
+      search_by_attribute
+      puts "Enter ID number: "
+      @find_by_id = gets.chomp
+    end
+
+    contact_found # Display contact selected
 
     puts "\n"
     puts '[1] Modify first name'
@@ -83,21 +105,10 @@ class CRM
     puts "\nEnter new value: "
     new_value = gets.chomp
 
-    case @search_attr
-    when 1
-      @search_attr = "first_name"
-    when 2
-      @search_attr = "last_name"
-    when 3
-      @search_attr = "email"
-    when 4
-      @search_attr = "note"
-    when 5
-      print_main_menu
-    end
+    target_attr
 
     Contact.all.each do |contact|
-      if contact.id == find_by_id.to_i
+      if contact.id == @find_by_id.to_i
         contact.send("#{@search_attr}=", new_value)
         puts "\n"
         puts "CONTACT UPDATED\n"
@@ -116,15 +127,17 @@ class CRM
 
     puts "[1] Search for contact"
     puts "[2] Enter contact ID"
-    find_by_id = gets.chomp.to_i
+    @find_by_id = gets.chomp.to_i
 
     if find_by_id == 1
       search_by_attribute
       puts "Enter ID number: "
-      find_by_id = gets.chomp.to_i
+      @find_by_id = gets.chomp.to_i
     end
 
-    Contact.all.each { |contact| contact.delete if contact.id == find_by_id }
+    contact_found
+
+    Contact.all.each { |contact| contact.delete if contact.id == @find_by_id }
 
   end
 
@@ -154,18 +167,7 @@ class CRM
     puts "\nEnter a number: "
     @search_attr = gets.chomp.to_i
 
-    case @search_attr
-    when 1
-      @search_attr = "first_name"
-    when 2
-      @search_attr = "last_name"
-    when 3
-      @search_attr = "email"
-    when 4
-      @search_attr = "id"
-    when 5
-      print_main_menu
-    end
+    target_attr
 
     @search_results = []
     puts "\nEnter value: "
